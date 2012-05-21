@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2012-05-20T22:26:10 CEST
+EESchema Schematic File Version 2  date 2012-05-21T21:48:12 CEST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -29,13 +29,14 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-EELAYER 43  0
+LIBS:kw-luggage-cache
+EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 3
 Title ""
-Date "20 may 2012"
+Date "21 may 2012"
 Rev ""
 Comp ""
 Comment1 ""
@@ -43,6 +44,14 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Wire Wire Line
+	1250 6000 950  6000
+Wire Wire Line
+	1250 6200 950  6200
+Wire Wire Line
+	1850 5800 1850 6000
+Wire Wire Line
+	1850 6000 1550 6000
 Wire Wire Line
 	6350 6850 6200 6850
 Wire Wire Line
@@ -215,6 +224,50 @@ Wire Wire Line
 	6350 5950 6200 5950
 Wire Wire Line
 	6950 6850 6850 6850
+Wire Wire Line
+	1850 6100 1550 6100
+Wire Wire Line
+	1850 6500 1850 6200
+Wire Wire Line
+	1850 6200 1550 6200
+Wire Wire Line
+	950  6100 1250 6100
+Text GLabel 1850 6100 2    60   Input ~ 0
+MOSI
+$Comp
+L GND #PWR?
+U 1 1 4FBA9B69
+P 1850 6500
+F 0 "#PWR?" H 1850 6500 30  0001 C CNN
+F 1 "GND" H 1850 6430 30  0001 C CNN
+	1    1850 6500
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 4FBA9B65
+P 1850 5800
+F 0 "#PWR?" H 1850 5890 20  0001 C CNN
+F 1 "+5V" H 1850 5890 30  0000 C CNN
+	1    1850 5800
+	1    0    0    -1  
+$EndComp
+Text GLabel 950  6200 0    60   Input ~ 0
+~Reset
+Text GLabel 950  6100 0    60   Input ~ 0
+SCK
+Text GLabel 950  6000 0    60   Input ~ 0
+MISO
+$Comp
+L AVR-ISP-6 J?
+U 1 1 4FBA9B2E
+P 1400 6100
+F 0 "J?" H 1250 6350 50  0000 C CNN
+F 1 "AVR-ISP-6" H 1150 5825 50  0000 L BNN
+F 2 "AVR-ISP-6" V 900 6100 50  0001 C CNN
+	1    1400 6100
+	1    0    0    -1  
+$EndComp
 $Comp
 L GND #PWR?
 U 1 1 4FB952EE
@@ -643,9 +696,9 @@ F 1 "1 mOhm" V 6500 2700 50  0000 C CNN
 	1    6500 2700
 	0    1    1    0   
 $EndComp
-Text GLabel 10200 1000 0    60   Output ~ 0
+Text GLabel 9550 1000 2    60   Output ~ 0
 +24 V output
-Text GLabel 10100 2700 0    60   Output ~ 0
+Text GLabel 9550 2700 2    60   Output ~ 0
 0 V output
 $Sheet
 S 1000 2000 2000 900 
