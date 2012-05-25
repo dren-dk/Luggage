@@ -76,13 +76,30 @@ void led(char on) {
   }
 }
 
-void lcdHello() {
+void lcdInit() {
+  lcd_init();   // init the LCD screen
+  lcd_clrscr();	// initial screen cleanup
   lcd_home();
-  lcd_string(PROGSTR("Henrik Frandsen "));
+  lcd_instr(LCD_DISP_ON);
+}
+
+
+void lcdHello(char frame) {  
+  if ((frame & 3) == 0) {
+    lcdInit();
+  }
+
+  if (frame & 4) {
+    lcd_string(PROGSTR("Henrik Frandsen "));
+
+  } else {
+    lcd_string(PROGSTR("  1 kW Kuffert  "));
+  }
+
+  lcd_home();
 }
 
 void lcdReadout(char watt) {
-  lcd_home();
   
   float a = getOsADC(0)*100.0/(1<<10);
   int ai = a;
@@ -111,6 +128,7 @@ void lcdReadout(char watt) {
 
   lcd_string(buffy);
   //  lcd_string_format(PROGSTR("%d   %d  "), getOsADC(0), getOsADC(1));
+  lcd_home();
 }
 
 
@@ -126,12 +144,10 @@ int main(void) {
   stdout = stdin = &uart_str;
   fprintf(stdout, PROGSTR("#Power up!\n"));
 
-  sleepMs(100);
+  sleepMs(2500);
 
-  lcd_init();   // init the LCD screen
-  lcd_clrscr();	// initial screen cleanup
-  lcd_home();
-  lcd_instr(LCD_DISP_ON);
+  lcdInit();
+  sleepMs(100);
   
   led(0);
 
@@ -148,9 +164,9 @@ int main(void) {
     //    led(frame & 1); 
 
     if (lcdState == 0) {
-      lcdHello();      
+      lcdHello(frame);      
 
-      if (frame > 2) {
+      if (frame > 8) {
 	++lcdState;
       }
 

@@ -10,6 +10,7 @@
 #include "HD44780.h"
 
 //-----------------delays---------------------------------------------------------
+//#define LOOP_CYCLES 8 				//Number of cycles that the loop takes
 #define LOOP_CYCLES 8 				//Number of cycles that the loop takes
 
 #define delay_us(num) delay_int(num/(LOOP_CYCLES*(1/(F_CPU/1000000.0))))
