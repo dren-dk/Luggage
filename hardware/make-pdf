@@ -1,0 +1,2 @@
+gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=kw-luggage.pdf -dBATCH \
+  kw-luggage.ps kw-luggage-Power\ supply\ 1.ps  kw-luggage-Power\ supply\ 2.ps  
