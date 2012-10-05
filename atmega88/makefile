@@ -2,7 +2,9 @@
 
 AVR = atmega88
 #PROG = -c usbtiny
-AVR_ISP_PROGRAMMER = -c avrispv2 -P usb
+#AVR_ISP_PROGRAMMER = -c avrispv2 -P usb
+#AVR_ISP_PROGRAMMER = -c avrispv2 -P usb
+AVR_ISP_PROGRAMMER ?= -c jtag2isp -P usb
 
 # Allow the user to have a different programmer.
 -include $(HOME)/.makefile
@@ -18,6 +20,8 @@ CC=avr-gcc
 SIZE=avr-size
 CFLAGS  = -Os -Wall -pedantic-errors -Werror -mcall-prologues -mmcu=$(AVR) -std=c99 -g
 CFLAGS  += -I$(FW)
+CFLAGS += -DF_CPU=12000000
+CFLAGS += -DUART_BAUD=9600
 
 CPPFLAGS=-fno-exceptions
 

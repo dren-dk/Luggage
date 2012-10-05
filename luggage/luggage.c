@@ -1,5 +1,3 @@
-#include "defines.h"
-
 #include <ctype.h>
 #include <inttypes.h>
 
@@ -19,10 +17,8 @@
 #include <avr/pgmspace.h>
 
 #include "uart.h"
-#include "sleep.h"
 
-#include "aux_globals.h"
-#include "HD44780.h"
+#include "lcd.h"
 
 // We don't really care about unhandled interrupts.
 EMPTY_INTERRUPT(__vector_default)
@@ -77,23 +73,18 @@ void led(char on) {
 }
 
 void lcdInit() {
-  lcd_init();   // init the LCD screen
+  lcd_init(LCD_DISP_ON);
   lcd_clrscr();	// initial screen cleanup
   lcd_home();
-  lcd_instr(LCD_DISP_ON);
 }
 
 
 void lcdHello(char frame) {  
-  if ((frame & 3) == 0) {
-    lcdInit();
-  }
-
   if (frame & 4) {
-    lcd_string(PROGSTR("Henrik Frandsen "));
+    lcd_puts(PROGSTR("Henrik Frandsen "));
 
   } else {
-    lcd_string(PROGSTR("  1 kW Kuffert  "));
+    lcd_puts(PROGSTR("  1 kW Kuffert  "));
   }
 
   lcd_home();
@@ -126,8 +117,8 @@ void lcdReadout(char watt) {
     strcat(buffy, " ");
   }
 
-  lcd_string(buffy);
-  //  lcd_string_format(PROGSTR("%d   %d  "), getOsADC(0), getOsADC(1));
+  lcd_puts(buffy);
+  //  lcd_puts_format(PROGSTR("%d   %d  "), getOsADC(0), getOsADC(1));
   lcd_home();
 }
 
@@ -144,10 +135,10 @@ int main(void) {
   stdout = stdin = &uart_str;
   fprintf(stdout, PROGSTR("#Power up!\n"));
 
-  sleepMs(2500);
+  _delay_ms(100);
 
   lcdInit();
-  sleepMs(100);
+  _delay_ms(100);
   
   led(0);
 
@@ -158,7 +149,7 @@ int main(void) {
       fprintf(stdout, PROGSTR("OK\n"));
       //      lcd_clrscr();
       //lcd_home();
-      //      lcd_string_format(PROGSTR("hest %d"), frame);
+      //      lcd_puts_format(PROGSTR("hest %d"), frame);
     }
 
     //    led(frame & 1); 
@@ -180,8 +171,12 @@ int main(void) {
 	}
       }
     }
+    
+    for (char i=0;i<5;i++) {
+      wdt_reset();
+      _delay_ms(100);
+    }
 
-    sleepMs(500);
     wdt_reset();
     frame++;
   }	
