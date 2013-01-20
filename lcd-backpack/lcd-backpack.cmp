@@ -1,0 +1,199 @@
+Cmp-Mod V01 Created by CvPcb (2012-apr-16-27)-stable date = Sun 20 Jan 2013 01:39:31 PM CET
+
+BeginCmp
+TimeStamp = /50FABD27;
+Reference = C1;
+ValeurCmp = 10uF/35V;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD26;
+Reference = C2;
+ValeurCmp = 220uF/35V;
+IdModule  = cp8-35;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD2C;
+Reference = C3;
+ValeurCmp = 82pF;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD29;
+Reference = C4;
+ValeurCmp = 220uF/35V;
+IdModule  = cp8-35;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD28;
+Reference = C5;
+ValeurCmp = 4.7uF/16V;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABDAE;
+Reference = C6;
+ValeurCmp = 100nF;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABDB5;
+Reference = C7;
+ValeurCmp = 100nF;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAEF5A;
+Reference = C8;
+ValeurCmp = 100nF;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB1FA;
+Reference = D1;
+ValeurCmp = LED;
+IdModule  = LED-0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD2B;
+Reference = D2;
+ValeurCmp = SK_34;
+IdModule  = diode-SMA-unfucked;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB8C4;
+Reference = IC1;
+ValeurCmp = ATMEGA328-A;
+IdModule  = TQFP32;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB1F8;
+Reference = J1;
+ValeurCmp = AVR-ISP-6;
+IdModule  = pin_array_3x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD2A;
+Reference = L1;
+ValeurCmp = 330uH;
+IdModule  = INDUCTOR_V;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAEE42;
+Reference = P1;
+ValeurCmp = hole;
+IdModule  = hole-2.5;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB508;
+Reference = P2;
+ValeurCmp = HD44780;
+IdModule  = SIL-14;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB695;
+Reference = P3;
+ValeurCmp = backlight;
+IdModule  = SIL-2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAC123;
+Reference = P4;
+ValeurCmp = gpio;
+IdModule  = pin_array_6x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB5C4;
+Reference = P5;
+ValeurCmp = power;
+IdModule  = con-molex-6410-04;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAC0A4;
+Reference = P6;
+ValeurCmp = serial;
+IdModule  = con-molex-6410-04;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAEE4B;
+Reference = P7;
+ValeurCmp = hole;
+IdModule  = hole-2.5x4.5;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAC283;
+Reference = Q1;
+ValeurCmp = nx3008nbk;
+IdModule  = SOT23GDS;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB699;
+Reference = R1;
+ValeurCmp = 10R;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAB1FB;
+Reference = R2;
+ValeurCmp = 390R;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD2F;
+Reference = R3;
+ValeurCmp = 0R22;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD2E;
+Reference = R4;
+ValeurCmp = 10k;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD2D;
+Reference = R5;
+ValeurCmp = 30k;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FAEF5E;
+Reference = R6;
+ValeurCmp = 10k;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /50FABD30;
+Reference = U1;
+ValeurCmp = MC34063;
+IdModule  = SO8N;
+EndCmp
+
+EndListe

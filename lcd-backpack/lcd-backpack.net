@@ -1,0 +1,277 @@
+# EESchema Netlist Version 1.1 created  Sun 20 Jan 2013 01:39:31 PM CET
+(
+ ( /50FABD27 SM0805 C1 10uF/35V
+  ( 1 +24V )
+  ( 2 GND )
+ )
+ ( /50FABD26 cp8-35 C2 220uF/35V
+  ( 1 +24V )
+  ( 2 GND )
+ )
+ ( /50FABD2C SM0603 C3 82pF
+  ( 1 N-000013 )
+  ( 2 GND )
+ )
+ ( /50FABD29 cp8-35 C4 220uF/35V
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /50FABD28 SM0805 C5 4.7uF/16V
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /50FABDAE SM0603 C6 100nF
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /50FABDB5 SM0603 C7 100nF
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /50FAEF5A SM0603 C8 100nF
+  ( 1 contrast )
+  ( 2 GND )
+ )
+ ( /50FAB1FA LED-0805 D1 LED
+  ( 1 N-000028 )
+  ( 2 GND )
+ )
+ ( /50FABD2B diode-SMA-unfucked D2 SK_34
+  ( 1 GND )
+  ( 2 /sw )
+ )
+ ( /50FAB8C4 TQFP32 IC1 ATMEGA328-A
+  ( 1 R/~W )
+  ( 2 Enable )
+  ( 3 GND )
+  ( 4 +5V )
+  ( 5 GND )
+  ( 6 +5V )
+  ( 7 D4 )
+  ( 8 D5 )
+  ( 9 D6 )
+  ( 10 D7 )
+  ( 11 pd7 )
+  ( 12 pb0 )
+  ( 13 pb1 )
+  ( 14 pb2 )
+  ( 15 MOSI )
+  ( 16 MISO )
+  ( 17 SCK )
+  ( 18 +5V )
+  ( 19 adc6 )
+  ( 20 +5V )
+  ( 21 GND )
+  ( 22 adc7 )
+  ( 23 CurrentADC )
+  ( 24 VoltageADC )
+  ( 25 pc2 )
+  ( 26 pc3 )
+  ( 27 pc4 )
+  ( 28 pc5 )
+  ( 29 ~Reset )
+  ( 30 serial-in )
+  ( 31 Serial-out )
+  ( 32 RS )
+ )
+ ( /50FAB1F8 pin_array_3x2 J1 AVR-ISP-6
+  ( 1 MISO )
+  ( 2 +5V )
+  ( 3 SCK )
+  ( 4 MOSI )
+  ( 5 ~Reset )
+  ( 6 GND )
+ )
+ ( /50FABD2A INDUCTOR_V L1 330uH
+  ( 1 /sw )
+  ( 2 +5V )
+ )
+ ( /50FAEE42 hole-2.5 P1 hole
+  ( 1 ? )
+ )
+ ( /50FAB508 SIL-14 P2 HD44780
+  ( 1 GND )
+  ( 2 +5V )
+  ( 3 contrast )
+  ( 4 RS )
+  ( 5 R/~W )
+  ( 6 Enable )
+  ( 7 ? )
+  ( 8 ? )
+  ( 9 ? )
+  ( 10 ? )
+  ( 11 D4 )
+  ( 12 D5 )
+  ( 13 D6 )
+  ( 14 D7 )
+ )
+ ( /50FAB695 SIL-2 P3 backlight
+  ( 1 N-000031 )
+  ( 2 N-000030 )
+ )
+ ( /50FAC123 pin_array_6x2 P4 gpio
+  ( 1 pc2 )
+  ( 2 pc3 )
+  ( 3 pc4 )
+  ( 4 pc5 )
+  ( 5 adc6 )
+  ( 6 adc7 )
+  ( 7 pb0 )
+  ( 8 pb1 )
+  ( 9 pb2 )
+  ( 10 pd7 )
+  ( 11 +5V )
+  ( 12 GND )
+ )
+ ( /50FAB5C4 con-molex-6410-04 P5 power
+  ( 1 +24V )
+  ( 2 CurrentADC )
+  ( 3 VoltageADC )
+  ( 4 GND )
+ )
+ ( /50FAC0A4 con-molex-6410-04 P6 serial
+  ( 1 +5V )
+  ( 2 serial-in )
+  ( 3 Serial-out )
+  ( 4 GND )
+ )
+ ( /50FAEE4B hole-2.5x4.5 P7 hole
+  ( 1 ? )
+ )
+ ( /50FAC283 SOT23GDS Q1 nx3008nbk
+  ( D N-000030 )
+  ( G MOSI )
+  ( S GND )
+ )
+ ( /50FAB699 SM0603 R1 10R
+  ( 1 +5V )
+  ( 2 N-000031 )
+ )
+ ( /50FAB1FB SM0603 R2 390R
+  ( 1 N-000028 )
+  ( 2 SCK )
+ )
+ ( /50FABD2F SM0805 R3 0R22
+  ( 1 +24V )
+  ( 2 N-000011 )
+ )
+ ( /50FABD2E SM0603 R4 10k
+  ( 1 N-000009 )
+  ( 2 GND )
+ )
+ ( /50FABD2D SM0603 R5 30k
+  ( 1 +5V )
+  ( 2 N-000009 )
+ )
+ ( /50FAEF5E SM0603 R6 10k
+  ( 1 pb1 )
+  ( 2 contrast )
+ )
+ ( /50FABD30 SO8N U1 MC34063
+  ( 1 N-000011 )
+  ( 2 /sw )
+  ( 3 N-000013 )
+  ( 4 GND )
+  ( 5 N-000009 )
+  ( 6 +24V )
+  ( 7 N-000011 )
+  ( 8 N-000011 )
+ )
+)
+*
+{ Allowed footprints by component:
+$component C1
+ SM*
+ C?
+ C1-1
+$endlist
+$component C2
+ CP*
+ SM*
+$endlist
+$component C3
+ SM*
+ C?
+ C1-1
+$endlist
+$component C4
+ CP*
+ SM*
+$endlist
+$component C5
+ SM*
+ C?
+ C1-1
+$endlist
+$component C6
+ SM*
+ C?
+ C1-1
+$endlist
+$component C7
+ SM*
+ C?
+ C1-1
+$endlist
+$component C8
+ SM*
+ C?
+ C1-1
+$endlist
+$component D1
+ LED-3MM
+ LED-5MM
+ LED-10MM
+ LED-0603
+ LED-0805
+ LED-1206
+ LEDV
+$endlist
+$component D2
+ D?
+ S*
+$endlist
+$component R1
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R2
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R3
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R4
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R5
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R6
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$endfootprintlist
+}

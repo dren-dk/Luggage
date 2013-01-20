@@ -1,0 +1,22 @@
+PCBNEW-LibModule-V1  Sun 20 Jan 2013 01:03:30 PM CET
+# encoding utf-8
+$INDEX
+hole-2.5
+$EndINDEX
+$MODULE hole-2.5
+Po 0 0 0 15 50FBDB80 00000000 ~~
+Li hole-2.5
+Sc 00000000
+AR 
+Op 0 0 0
+T0 0 -1500 600 600 0 120 N I 21 N "hole-2.5"
+T1 0 1500 600 600 0 120 N I 21 N "VAL**"
+$PAD
+Sh "1" C 1575 1575 0 0 0
+Dr 984 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 0
+$EndPAD
+$EndMODULE  hole-2.5
+$EndLIBRARY
