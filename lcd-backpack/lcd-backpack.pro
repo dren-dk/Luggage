@@ -1,4 +1,4 @@
-update=Sun 20 Jan 2013 01:41:36 PM CET
+update=Wed 06 Feb 2013 08:10:35 PM CET
 version=1
 last_client=pcbnew
 [general]
@@ -73,9 +73,9 @@ NetIExt=net
 EquName1=devcms
 [pcbnew]
 version=1
-PadDrlX=984
-PadDimH=1575
-PadDimV=1575
+PadDrlX=400
+PadDimH=600
+PadDimV=1200
 BoardThickness=630
 TxtPcbV=800
 TxtPcbH=600
@@ -87,7 +87,7 @@ DrawLar=150
 EdgeLar=150
 TxtLar=120
 MSegLar=150
-LastNetListRead=lcd-backpack.net
+LastNetListRead=
 [pcbnew/libraries]
 LibDir=
 LibName1=sockets
@@ -101,8 +101,4 @@ LibName8=led
 LibName9=dip_sockets
 LibName10=pga_sockets
 LibName11=valves
-LibName12=libs/cp8-35
-LibName13=libs/diode-SMA-unfucked
-LibName14=libs/hole-2_5
-LibName15=libs/hole-2_5x4_5
-LibName16=libs/con-molex-6410-04
+LibName12=/home/ff/projects/Luggage/lcd-backpack/libs/con-molex-6410-04
