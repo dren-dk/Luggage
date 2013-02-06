@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 20 Jan 2013 01:32:17 PM CET
+EESchema Schematic File Version 2  date Sun 20 Jan 2013 03:59:20 PM CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -44,6 +44,8 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+NoConn ~ 3500 5150
+NoConn ~ 3850 5150
 Wire Wire Line
 	4025 1100 4350 1100
 Wire Wire Line
