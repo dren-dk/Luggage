@@ -17,7 +17,7 @@
 #include <avr/pgmspace.h>
 
 #include "uart.h"
-
+#include "adchelper.h"
 #include "lcd.h"
 
 // We don't really care about unhandled interrupts.
@@ -36,7 +36,7 @@ const char *getString(PGM_P src) {
 }
 
 #define PROGSTR(s) getString(PSTR(s))
-
+/*
 unsigned int getADC(unsigned char input) {
     ADCSRA |= 1<<ADEN;
 
@@ -62,13 +62,13 @@ unsigned int getOsADC(unsigned char input) {
     
     return sum >> ADC_OVERSAMPLES;
 }
-
+*/
 
 void led(char on) {
   if (on) {
-    PORTB |= _BV(PB1);   
+    PORTB |= _BV(PB5);   
   } else {
-    PORTB &=~ _BV(PB1);   
+    PORTB &=~ _BV(PB5);   
   }
 }
 
@@ -128,7 +128,7 @@ int main(void) {
   led(1);
 
   ADCSRA |= 1<<ADEN; // Enable ADC
-  DDRB  |= _BV(PB1);  // LED output
+  DDRB  |= _BV(PB5);  // LED output
 
   uart_init();
   FILE uart_str = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
@@ -152,7 +152,7 @@ int main(void) {
       //      lcd_puts_format(PROGSTR("hest %d"), frame);
     }
 
-    //    led(frame & 1); 
+    led(frame & 1); 
 
     if (lcdState == 0) {
       lcdHello(frame);      

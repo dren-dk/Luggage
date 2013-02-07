@@ -27,6 +27,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "lcd.h"
+#include "mstdio.h"
 
 /* 
 ** constants/macros 
@@ -428,6 +429,7 @@ void lcd_home(void)
     lcd_command(1<<LCD_HOME);
 }
 
+
 /*************************************************************************
 Display character at current cursor position 
 Input:    character to be displayed                                       
@@ -608,4 +610,11 @@ void lcd_init(uint8_t dispAttr)
 
 }/* lcd_init */
 
+
+void lcd_printf(PGM_P format, ...) {
+  va_list ap;
+  va_start(ap, format);
+  mvfprintf(lcd_putc, format, ap);
+  va_end(ap);
+}
 

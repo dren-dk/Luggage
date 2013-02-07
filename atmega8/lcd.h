@@ -57,7 +57,7 @@
  *  @name  Definitions for Display Size 
  *  Change these definitions to adapt setting to your display
  */
-#define LCD_LINES           1     /**< number of visible lines of the display */
+#define LCD_LINES           2     /**< number of visible lines of the display */
 #define LCD_DISP_LENGTH    16     /**< visibles characters per line of the display */
 #define LCD_LINE_LENGTH  0x40     /**< internal line length of the display    */
 #define LCD_START_LINE1  0x00     /**< DDRAM address of first char of line 1 */
@@ -259,6 +259,8 @@ extern void lcd_data(uint8_t data);
  @brief macros for automatically storing string constant in program memory
 */
 #define lcd_puts_P(__s)         lcd_puts_p(PSTR(__s))
+
+void lcd_printf(PGM_P format, ...);
 
 /*@}*/
 #endif //LCD_H
