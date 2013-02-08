@@ -1,5 +1,6 @@
 #include "mstdio.h"
 #include <stdlib.h>
+#include <string.h>
 
 void muartInit(void) {
 #if F_CPU < 2000000UL && defined(U2X)
@@ -40,46 +41,85 @@ char mgetch() {
 void mvfprintf(void (*putchar)(const char), PGM_P format, va_list ap) {
 
   char ch;
+  unsigned char fixedLength = 0;
+  char prefix = ' ';
+
   while ((ch = pgm_read_byte(format))) {
     if (ch == '%') {
       char type = pgm_read_byte(++format);
+      
+      if (type == '0') {
+	prefix = '0';
+	type = pgm_read_byte(++format);	
+      } else {
+	prefix = ' ';
+      }
+
+      if (type >= '1' && type <= '9') {
+	fixedLength = type-'0';
+	type = pgm_read_byte(++format);		
+      } else {
+	fixedLength = 0;
+      }
+
       if (type == 'd' || type == 'x') { // An integer from ram
-		int d = va_arg(ap, int);
-		char db[10];
-		db[0] = 0;
-		itoa(d, db, type=='d' ? 10 : 16);
-		char *s = db;
-		while (*s) {
-		  putchar(*(s++));
-		}
 
+	int d = va_arg(ap, int);
+	char db[10];
+	db[0] = 0;
+	itoa(d, db, type=='d' ? 10 : 16);
+	
+	if (fixedLength) {
+	  char pfxl = fixedLength-strlen(db);
+	  if (pfxl > 0) {
+	    while (pfxl--) {
+	      putchar(prefix);
+	    }
+	  }
+	}
+
+	char *s = db;
+	while (*s) {
+	  putchar(*(s++));
+	}
+	
       } else if (type == 'l') { // A long from ram
-		long d = va_arg(ap, long);
-		char db[10];
-		db[0] = 0;
-		itoa(d, db, 10);
-		char *s = db;
-		while (*s) {
-		  putchar(*(s++));
-		}
+	long d = va_arg(ap, long);
+	char db[10];
+	db[0] = 0;
+	itoa(d, db, 10);
 
+	if (fixedLength) {
+	  char pfxl = fixedLength-strlen(db);
+	  if (pfxl > 0) {
+	    while (pfxl--) {
+	      putchar(prefix);
+	    }
+	  }
+	}
+
+	char *s = db;
+	while (*s) {
+	  putchar(*(s++));
+	}
+	
       } else if (type == 's') { // A string from ram
-		char *s = va_arg(ap, char *);
-		while (*s) {
-		  putchar(*(s++));
-		}
-
+	char *s = va_arg(ap, char *);
+	while (*s) {
+	  putchar(*(s++));
+	}
+	
       } else if (type == 'p') { // A string from progmem
-		PGM_P s = va_arg(ap, PGM_P);
-
-		while ((ch = pgm_read_byte(s))) {
-		  putchar(ch);
-		  ++s;
-		}
-
+	PGM_P s = va_arg(ap, PGM_P);
+	
+	while ((ch = pgm_read_byte(s))) {
+	  putchar(ch);
+	  ++s;
+	}
+	
       } else { // Fall back is to print the formatting code (so %% works normally)
-		putchar('%');
-		putchar(ch);		
+	putchar('%');
+	putchar(ch);		
       }	  
 
     } else if (ch == '\n') { // This saves one byte of flash per line of output, so yay!
