@@ -14,6 +14,7 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h> 
 #include <avr/pgmspace.h>
+#include <avr/eeprom.h> 
 
 #include "mstdio.h"
 #include "adchelper.h"
@@ -22,11 +23,21 @@
 // We don't really care about unhandled interrupts.
 EMPTY_INTERRUPT(__vector_default)
 
+#define EEPROM_MAGIC_VALUE 0xBEEF
+
+#define EEPROM_MAGIC ((uint16_t *)0)
+#define EEPROM_ADC2MV ((uint16_t *)2)
+#define EEPROM_ADC2MA ((uint16_t *)4)
+#define EEPROM_CONTRAST ((uint16_t *)6)
+#define EEPROM_OWNER ((void *)8)
+
+#define OWNER_LENGTH 16
+
 
 // A macro and function to store string constants in flash and only copy them to
 // RAM when needed, note the limit on string length.
 
-char owner[17];
+char owner[OWNER_LENGTH+1];
 
 void setContrast(unsigned char value) {
   if (value) {    
@@ -96,7 +107,7 @@ void lcdReadout(char watt) {
     msprintf(buffy, PSTR("%2d.%02d V %3d.%02d A"), vi,vd, ai,ad);
   }
 
-  while (strlen(buffy) < 16) {
+  while (strlen(buffy) < OWNER_LENGTH) {
     strcat(buffy, " ");
   }
 
@@ -130,10 +141,15 @@ void pollMenuOrDelay() {
 	menu = 1;
       }      
 
-    } else if (menu == 1) {
+    } else if (menu == 1 || menu==10) {
       mprintf(PSTR("Menu:\n +/-: Contrast: %d\n v: Voltage calibration %d\n a: Current calibration %d\n o: Owner: %s\n q: Quit\n"),
 	      contrast, adc2mv, adc2ma, owner);
-      menu = 2;
+      if (menu == 10) {
+	menu = 0;
+      } else {
+	menu = 2;
+      }
+      
 
     } else if (menu == 2) {
       if (ch == '-' || ch == '+') {
@@ -153,7 +169,7 @@ void pollMenuOrDelay() {
 
 	setContrast(contrast);
 
-	// TODO: Store contrast in EEPROM
+	eeprom_write_word(EEPROM_CONTRAST, contrast);
 
       } else if (ch == 'v') {
 	menu = 3;
@@ -206,7 +222,7 @@ void pollMenuOrDelay() {
 	    mv /= adc;
 	    adc2mv = mv;
 	
-	    // TODO: Store adc2mv in EEPROM
+	    eeprom_write_word(EEPROM_ADC2MV, adc2mv);
 	  }
 	} else {
 
@@ -223,7 +239,7 @@ void pollMenuOrDelay() {
 	    ma /= adc;
 	    adc2ma = ma;
 	
-	    // TODO: Store adc2ma in EEPROM
+	    eeprom_write_word(EEPROM_ADC2MA, adc2ma);
 	  }
 	}
 	
@@ -250,7 +266,7 @@ void pollMenuOrDelay() {
       } else if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || 
 	  ch == ' ' || ch == '-' || ch=='.') {
 	
-	if (ownerLen < 16) {
+	if (ownerLen < OWNER_LENGTH) {
 	  owner[ownerLen++] = ch;
 	  owner[ownerLen] = 0;
 	  mputchar(ch);
@@ -258,12 +274,12 @@ void pollMenuOrDelay() {
 	
       } else if (ch == '\r') {
 	
-	while (ownerLen < 16) {
+	while (ownerLen < OWNER_LENGTH) {
 	  owner[ownerLen++] = ' ';
 	  owner[ownerLen] = 0;
 	}
 	
-	// TODO: Store owner in EEPROM
+	eeprom_write_block(owner, EEPROM_OWNER, OWNER_LENGTH); 
 	menu = 1;
       }      
     }
@@ -279,7 +295,8 @@ int main(void) {
   DDRB  |= _BV(PB5);  // LED output
 
   muartInit();
-  mprintf(PSTR("#Power up!\n"));
+  mprintf(PSTR("# Power up! Hit enter to enter calibration menu:\n"));
+  menu = 10;
 
   _delay_ms(100);
 
@@ -292,21 +309,26 @@ int main(void) {
   // Set up timer 1 for fast PWM mode & the highest frequency available
   TCCR1A = _BV(WGM10);
   TCCR1B = _BV(WGM12) | _BV(CS10);
+
+
+  unsigned int eepromMagic = eeprom_read_word(EEPROM_MAGIC);
+  if (eepromMagic != EEPROM_MAGIC_VALUE) {
+    eeprom_write_word(EEPROM_MAGIC,  EEPROM_MAGIC_VALUE);
+    eeprom_write_word(EEPROM_ADC2MV, 6365);
+    eeprom_write_word(EEPROM_ADC2MA, 11988);
+    eeprom_write_word(EEPROM_CONTRAST, 30);
+    strcpy_P(owner, PSTR(" Not calibrated "));
+    eeprom_write_block(owner, EEPROM_OWNER, OWNER_LENGTH); 
+  } 
+
+  adc2mv   = eeprom_read_word(EEPROM_ADC2MV);
+  adc2ma   = eeprom_read_word(EEPROM_ADC2MA);
+  contrast = eeprom_read_word(EEPROM_CONTRAST);
+  memset(owner, 0, OWNER_LENGTH+1);
+  eeprom_read_block(owner, EEPROM_OWNER, OWNER_LENGTH); 
   
-  // TODO: Get contrast from EEPROM
-  contrast = 30;
   setContrast(contrast);
 
-  // TODO: Get adc2mv from EEPROM
-  adc2mv = 6365;
-  
-  // TODO: Get adc2ma from EEPROM
-  adc2ma = 11988;
-
-  // TODO: Get owner from EEPROM
-  strcpy_P(owner, PSTR(" Not calibrated "));
-   
-  
   led(0);
 
   char frame = 0;

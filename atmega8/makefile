@@ -82,7 +82,7 @@ $(PROJ)-o.hex : $(OBJS) $(INTERMEDIATE)
 
 # Internal oscilator 8MHz, no prescaler, BOD=4.3V
 fuses8int:
-	avrdude $(AVR_PROGRAMMER) -p $(AVR) -B 100 -U lfuse:w:0xe2:m -U hfuse:w:0xdc:m -U efuse:w:0xf9:m 
+	avrdude $(AVR_PROGRAMMER) -p $(AVR) -B 100 -U lfuse:w:0xe2:m -U hfuse:w:0xd4:m 
 
 clean :
 	rm -f $(PROJ).hex $(PROJ).elf $(PROJ).map $(OBJS) $(INTERMEDIATE)
