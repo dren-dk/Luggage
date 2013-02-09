@@ -241,6 +241,7 @@ void pollMenuOrDelay() {
 
       if (ownerLen > 1 && ch == 8) {
 	owner[ownerLen-1] = 0;
+	mputchar(ch);
 	
       } else if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || 
 	  ch == ' ' || ch == '-' || ch=='.') {
