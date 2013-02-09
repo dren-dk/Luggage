@@ -26,7 +26,7 @@ EMPTY_INTERRUPT(__vector_default)
 // A macro and function to store string constants in flash and only copy them to
 // RAM when needed, note the limit on string length.
 
-char stringBuffer[80];
+char owner[17];
 
 void setContrast(unsigned char value) {
   if (value) {    
@@ -36,15 +36,6 @@ void setContrast(unsigned char value) {
     TCCR1A &=~ _BV(COM1A1);
   }
 }
-
-
-const char *getString(PGM_P src) {
-    //assert(strlen_P(src) < sizeof(stringBuffer));
-    strcpy_P(stringBuffer, src);
-    return stringBuffer;
-}
-
-#define PROGSTR(s) getString(PSTR(s))
 
 void led(char on) {
   if (on) {
@@ -60,13 +51,14 @@ void lcdInit() {
   lcd_home();
 }
 
-
 void lcdHello(char frame) {  
   if (frame & 4) {
-    lcd_puts_p(PSTR("Henrik Frandsen "));
+    lcd_gotoxy(0,0);
+    lcd_puts_p(PSTR("  1 kW Kuffert  "));
 
   } else {
-    lcd_puts_p(PSTR("  1 kW Kuffert  "));
+    lcd_gotoxy(0,1);
+    lcd_puts(owner);
   }
 
   lcd_home();
@@ -108,7 +100,11 @@ void lcdReadout(char watt) {
     strcat(buffy, " ");
   }
 
+  lcd_gotoxy(0,0);
   lcd_puts(buffy);
+
+  lcd_gotoxy(0,1);
+  lcd_puts(owner);
 
   if (!menu) {
     mprintf(PSTR("%2d.%02d V %3d.%02d A %4d.%d W %l vadc %d mV %l aadc %d mA\n"), vi,vd, ai,ad, wi,wd, 
@@ -118,7 +114,6 @@ void lcdReadout(char watt) {
   lcd_home();
 }
 
-char cmd[10];
 int contrast;
 
 void pollMenuOrDelay() {
@@ -136,8 +131,8 @@ void pollMenuOrDelay() {
       }      
 
     } else if (menu == 1) {
-      mprintf(PSTR("Menu:\n +/-: Contrast: %d\n v: Voltage calibration %d\n a: Current calibration %d\n q: Quit\n"),
-	      contrast, adc2mv, adc2ma);
+      mprintf(PSTR("Menu:\n +/-: Contrast: %d\n v: Voltage calibration %d\n a: Current calibration %d\n o: Owner: %s\n q: Quit\n"),
+	      contrast, adc2mv, adc2ma, owner);
       menu = 2;
 
     } else if (menu == 2) {
@@ -165,6 +160,9 @@ void pollMenuOrDelay() {
 
       } else if (ch == 'a') {
 	menu = 5;
+
+      } else if (ch == 'o') {
+	menu = 7;
 
       } else if (ch == 'q') {
 	menu = 0;
@@ -230,8 +228,34 @@ void pollMenuOrDelay() {
 	}
 	
 	menu = 1;
-      }
+      } 
+
+    } else if (menu == 7) {
+	mprintf(PSTR("Enter owner string: "));
+	menu = 8;
+	owner[0] = 0;
       
+    } else if (menu == 8) {
+            
+      int ownerLen = strlen(owner);
+
+      if (ownerLen > 1 && ch == 8) {
+	owner[ownerLen-1] = 0;
+	
+      } else if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || 
+	  ch == ' ' || ch == '-' || ch=='.') {
+	
+	if (ownerLen < 16) {
+	  owner[ownerLen++] = ch;
+	  owner[ownerLen] = 0;
+	  mputchar(ch);
+	}
+	
+      } else if (ch == '\r') {
+	
+	// TODO: Store owner in EEPROM
+	menu = 1;
+      }      
     }
   }
 }
@@ -268,6 +292,9 @@ int main(void) {
   
   // TODO: Get adc2ma from EEPROM
   adc2ma = 11988;
+
+  // TODO: Get owner from EEPROM
+  strcpy_P(owner, PSTR("Not calibrated"));
    
   
   led(0);
@@ -275,15 +302,6 @@ int main(void) {
   char frame = 0;
   char lcdState = 0;
   while(1) {
-
-
-    if (!(frame & 15)) {
-      //mprintf(PSTR("OK\n"));
-      //      lcd_clrscr();
-      //lcd_home();
-      //      lcd_puts_format(PROGSTR("hest %d"), frame);
-    }
-
     led(frame & 1); 
 
     if (lcdState == 0) {
