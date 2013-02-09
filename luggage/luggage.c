@@ -73,20 +73,27 @@ void lcdHello(char frame) {
 }
 
 char menu = 0;
+unsigned int adc2mv;
+unsigned int adc2ma;
+unsigned int currentCalibration;
 
 void lcdReadout(char watt) {
+  unsigned long aadc = getOsADC(0);
+  unsigned int ma = (aadc*adc2ma) >> 8;
+  int ai =  ma / 1000;
+  int ad = (ma % 1000) / 10;
+
+  unsigned long vadc = getOsADC(1);
+  unsigned int mv = (vadc*adc2mv) >> 8;
+  int vi =  mv / 1000;
+  int vd = (mv % 1000) / 10;
+
+  unsigned long uw = ma;
+  uw *= mv;
+  unsigned int mw = uw / 1000;
   
-  float a = getOsADC(0)*100.0/(1<<10);
-  int ai = a;
-  int ad = trunc((a-ai)*100);
-
-  float v = getOsADC(1)*30.0/(1<<10);
-  int vi = v;
-  int vd = trunc((v-vi)*100);
-
-  float w = v*a;
-  int wi = w;
-  int wd = trunc((w-wi)*10);
+  int wi =  mw/1000;
+  int wd = (mw%1000)/100;
 
   char buffy[27];
   memset(buffy, 0, sizeof(buffy));
@@ -104,53 +111,127 @@ void lcdReadout(char watt) {
   lcd_puts(buffy);
 
   if (!menu) {
-    mprintf(PSTR("%2d.%02d V %3d.%02d A %4d.%d W\n"), vi,vd, ai,ad, wi,wd);
+    mprintf(PSTR("%2d.%02d V %3d.%02d A %4d.%d W %l vadc %d mV %l aadc %d mA\n"), vi,vd, ai,ad, wi,wd, 
+	    vadc, mv, aadc, ma);
   }
   
   lcd_home();
 }
 
 char cmd[10];
-int contrast = 0;
+int contrast;
 
-void pollMenu() {
-  if (mchready()) {
-    char ch = mgetch();
-    if (menu) {
+void pollMenuOrDelay() {
+  for (char i=0;i<5;i++) {
+    wdt_reset();
+    char ch = mchready() ? mgetch() : 0;
 
-      if (menu <= 2) {
-	if (ch == '-' || ch == '+') {
-	  if (ch == '-') {
-	    contrast -= 10;
-	    if (contrast < 0) {
-	      contrast = 0;
-	    }
-	  } else {
-	    contrast += 10;
-	    if (contrast > 255) {
-	      contrast = 255;
-	    }
-	  }
-
-	  menu = 1;
-
-	  setContrast(contrast);
-
-	  // TODO: Store contrast in EEPROM
-
-	} else if (ch == 'q') {
-	  menu = 0;
-	}
-      }
-
-    } else if (ch == '\r') {
-      menu = 1;
+    if (!ch) {
+      _delay_ms(100);
     }
 
-    if (menu == 1) {
-      mprintf(PSTR("Menu:\n +/-: Contrast: %d\n v: Voltage calibration\n a: Current calibration\n q: Quit\n"),
-	      contrast);
+    if (menu == 0) {
+      if (ch == '\r') {
+	menu = 1;
+      }      
+
+    } else if (menu == 1) {
+      mprintf(PSTR("Menu:\n +/-: Contrast: %d\n v: Voltage calibration %d\n a: Current calibration %d\n q: Quit\n"),
+	      contrast, adc2mv, adc2ma);
       menu = 2;
+
+    } else if (menu == 2) {
+      if (ch == '-' || ch == '+') {
+	if (ch == '-') {
+	  contrast -= 1;
+	  if (contrast < 0) {
+	    contrast = 0;
+	  }
+	} else {
+	  contrast += 1;
+	  if (contrast > 60) {
+	    contrast = 60;
+	  }
+	}
+
+	menu = 1;
+
+	setContrast(contrast);
+
+	// TODO: Store contrast in EEPROM
+
+      } else if (ch == 'v') {
+	menu = 3;
+
+      } else if (ch == 'a') {
+	menu = 5;
+
+      } else if (ch == 'q') {
+	menu = 0;
+      }
+
+    } else if (menu == 3 || menu == 5) {
+      if (menu == 3) {
+	mprintf(PSTR("Enter voltage in mV: "));
+	menu = 4;
+      } else {
+	mprintf(PSTR("Enter current in mA: "));
+	menu = 6;
+      }
+      currentCalibration = 0;
+      
+    } else if (menu == 4 || menu == 6) {
+	
+      if (ch >= '0' && ch <= '9') {
+	currentCalibration *= 10;
+	currentCalibration += ch - '0';
+	mputchar(ch);
+	
+      } else if (ch == '\r') {
+
+	if (currentCalibration < 1000) {
+	  mputs("\r\nError: Value entered is too low for calibration, ignoring.\r\n");
+	  menu = 1;
+
+	} else if (menu == 4) {
+	  unsigned adc = getOsADC(1);
+
+	  if (adc < 100) {
+	    mputs("\r\nError: Voltage too low for calibration\r\n");
+	    menu = 3;
+
+	  } else {
+	    mputs("\r\nStored voltage calibration\r\n");
+	
+	    unsigned long mv = currentCalibration;
+	    mv <<= 8;
+	    mv /= adc;
+	    adc2mv = mv;
+	
+	    // TODO: Store adc2mv in EEPROM
+	  }
+	} else {
+
+	  unsigned int adc = getOsADC(0);
+	  if (adc < 20) {
+	    mputs("\r\nError: Current too low for calibration\r\n");
+	    menu = 5;
+
+	  } else {
+	    mputs("\r\nStored current calibration\r\n");
+	
+	    unsigned long ma = currentCalibration;
+	    ma <<= 8;
+	    ma /= adc;
+	    adc2ma = ma;
+	
+	    // TODO: Store adc2ma in EEPROM
+	  }
+	}
+	
+	menu = 1;
+      }
+      
     }
   }
 }
@@ -179,9 +260,15 @@ int main(void) {
   TCCR1B = _BV(WGM12) | _BV(CS10);
   
   // TODO: Get contrast from EEPROM
-  contrast = 0;
-
+  contrast = 30;
   setContrast(contrast);
+
+  // TODO: Get adc2mv from EEPROM
+  adc2mv = 6365;
+  
+  // TODO: Get adc2ma from EEPROM
+  adc2ma = 11988;
+   
   
   led(0);
 
@@ -189,7 +276,6 @@ int main(void) {
   char lcdState = 0;
   while(1) {
 
-    pollMenu();
 
     if (!(frame & 15)) {
       //mprintf(PSTR("OK\n"));
@@ -218,10 +304,7 @@ int main(void) {
       }
     }
     
-    for (char i=0;i<5;i++) {
-      wdt_reset();
-      _delay_ms(100);
-    }
+    pollMenuOrDelay();
 
     wdt_reset();
     frame++;

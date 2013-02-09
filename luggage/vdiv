@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+my @R1 = (
+    1, 1.2, 1.5, 2, 2.7, 3.3, 4.3, 5.1, 6.8, 8.2
+);
+
+my @R;
+push @R, @R1;
+push @R, map {$_*10} @R1;
+push @R, map {$_*100} @R1;
+
+my $target = 0.2;
+my $bestE;
+my $bestR;
+my $bestRatio;
+
+for my $ru (@R) {
+    for my $rl (@R) {
+	my $ratio = $rl/($ru+$rl);
+	my $error = $target-$ratio;
+	print "Ru=$ru, Rl=$rl: $ratio\n";
+
+	if (!$bestE or abs($error) <= abs($bestE)) {
+	    $bestE = $error;
+	    $bestR = "Ru=$ru, Rl=$rl";
+	    $bestRatio = $ratio;
+	}
+    }
+}
+
+print "$bestR: $bestRatio\n";
