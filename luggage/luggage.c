@@ -231,16 +231,20 @@ void pollMenuOrDelay() {
       } 
 
     } else if (menu == 7) {
-	mprintf(PSTR("Enter owner string: "));
-	menu = 8;
-	owner[0] = 0;
+      mprintf(PSTR("Enter owner string: >"));
+      mputs(owner);
+      mputchar('<');
+      mputchar(8);
+      menu = 8;
       
     } else if (menu == 8) {
             
       int ownerLen = strlen(owner);
 
-      if (ownerLen > 1 && ch == 8) {
+      if (ownerLen && ch == 8) {
 	owner[ownerLen-1] = 0;
+	mputchar(ch);
+	mputchar(' ');
 	mputchar(ch);
 	
       } else if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || 
@@ -253,6 +257,11 @@ void pollMenuOrDelay() {
 	}
 	
       } else if (ch == '\r') {
+	
+	while (ownerLen < 16) {
+	  owner[ownerLen++] = ' ';
+	  owner[ownerLen] = 0;
+	}
 	
 	// TODO: Store owner in EEPROM
 	menu = 1;
@@ -295,7 +304,7 @@ int main(void) {
   adc2ma = 11988;
 
   // TODO: Get owner from EEPROM
-  strcpy_P(owner, PSTR("Not calibrated"));
+  strcpy_P(owner, PSTR(" Not calibrated "));
    
   
   led(0);
