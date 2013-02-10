@@ -32,11 +32,6 @@ EMPTY_INTERRUPT(__vector_default)
 #define EEPROM_OWNER ((void *)8)
 
 #define OWNER_LENGTH 16
-
-
-// A macro and function to store string constants in flash and only copy them to
-// RAM when needed, note the limit on string length.
-
 char owner[OWNER_LENGTH+1];
 
 void setContrast(unsigned char value) {
@@ -195,8 +190,16 @@ void pollMenuOrDelay() {
       currentCalibration = 0;
       
     } else if (menu == 4 || menu == 6) {
-	
-      if (ch >= '0' && ch <= '9') {
+      
+      if (ch == 8) {
+	if (currentCalibration) {
+	  currentCalibration /= 10;
+	  mputchar(ch);
+	  mputchar(' ');
+	  mputchar(ch);	  
+	}
+
+      } else if (ch >= '0' && ch <= '9') {
 	currentCalibration *= 10;
 	currentCalibration += ch - '0';
 	mputchar(ch);
