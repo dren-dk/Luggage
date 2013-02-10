@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 09 Feb 2013 08:40:13 PM CET
+EESchema Schematic File Version 2  date Sun 10 Feb 2013 05:19:36 PM CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -37,7 +37,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 1
 Title "noname.sch"
-Date "7 feb 2013"
+Date "10 feb 2013"
 Rev ""
 Comp ""
 Comment1 ""
@@ -56,9 +56,7 @@ Wire Wire Line
 Wire Wire Line
 	1800 1700 1800 1600
 Wire Wire Line
-	1900 1100 1800 1100
-Wire Wire Line
-	1800 1100 1700 1100
+	1900 1100 1700 1100
 Wire Wire Line
 	1750 4500 1600 4500
 Wire Wire Line
@@ -89,61 +87,39 @@ Wire Wire Line
 	3850 3500 3750 3500
 Connection ~ 10000 2450
 Wire Wire Line
-	10300 2450 10000 2450
-Wire Wire Line
-	10000 2450 9400 2450
-Wire Wire Line
-	9400 2450 9100 2450
-Wire Wire Line
-	9100 2450 8300 2450
+	10300 2450 8300 2450
 Connection ~ 10000 2050
 Wire Wire Line
-	10300 2050 10000 2050
-Wire Wire Line
-	10000 2050 9400 2050
-Wire Wire Line
-	9400 2050 9100 2050
-Wire Wire Line
-	9100 2050 9000 2050
+	10300 2050 9000 2050
 Wire Wire Line
 	9400 2050 9400 1900
 Connection ~ 6250 2900
 Wire Wire Line
-	5300 900  5300 1100
+	5300 900  5300 1150
 Wire Wire Line
-	5300 1100 5300 1150
+	5600 1600 5300 1600
 Wire Wire Line
-	5300 1600 5600 1600
-Wire Wire Line
-	7100 1500 7100 1450
-Wire Wire Line
-	7100 1450 7100 1100
+	7100 1100 7100 1500
 Connection ~ 5300 1100
 Wire Wire Line
 	5600 1600 5600 1550
 Connection ~ 9100 2050
 Connection ~ 8300 2050
 Wire Wire Line
-	7950 2050 8300 2050
-Wire Wire Line
-	8300 2050 8400 2050
+	7950 2050 8400 2050
 Connection ~ 7950 2200
 Wire Wire Line
 	7950 2300 7950 2200
 Wire Wire Line
-	7950 2800 7950 2900
+	7950 2900 7950 2800
 Connection ~ 7100 1450
 Wire Wire Line
 	6950 1450 7100 1450
 Connection ~ 7950 1800
 Wire Wire Line
-	7950 1900 7950 1800
+	7950 1900 7950 1200
 Wire Wire Line
-	7950 1800 7950 1200
-Wire Wire Line
-	6250 1850 6250 1450
-Wire Wire Line
-	6250 1450 6250 1200
+	6250 1850 6250 1200
 Wire Wire Line
 	6250 1200 7950 1200
 Wire Wire Line
@@ -163,33 +139,21 @@ Wire Wire Line
 	5600 1150 5600 1100
 Connection ~ 5600 1100
 Wire Wire Line
-	7100 1100 5600 1100
+	5300 1100 7100 1100
 Wire Wire Line
-	5600 1100 5300 1100
-Wire Wire Line
-	7100 3000 7100 2900
-Wire Wire Line
-	7100 2900 7100 2500
+	7100 3000 7100 2500
 Connection ~ 7100 2900
 Wire Wire Line
-	8300 2450 8300 2900
+	8300 2900 8300 2450
 Connection ~ 7950 2900
 Wire Wire Line
 	8650 1750 9100 1750
 Wire Wire Line
 	9100 1750 9100 2050
 Wire Wire Line
-	5300 1550 5300 1600
+	5300 2900 5300 1550
 Wire Wire Line
-	5300 1600 5300 2900
-Wire Wire Line
-	5300 2900 6250 2900
-Wire Wire Line
-	6250 2900 7100 2900
-Wire Wire Line
-	7100 2900 7950 2900
-Wire Wire Line
-	7950 2900 8300 2900
+	8300 2900 5300 2900
 Connection ~ 6350 3650
 Wire Wire Line
 	6550 3650 6350 3650
@@ -200,11 +164,7 @@ Connection ~ 6350 5950
 Wire Wire Line
 	6550 5950 6350 5950
 Wire Wire Line
-	6350 6050 6350 5950
-Wire Wire Line
-	6350 5950 6350 5850
-Wire Wire Line
-	6350 5850 6350 5750
+	6350 6050 6350 5750
 Wire Wire Line
 	6350 5750 6550 5750
 Wire Wire Line
@@ -287,13 +247,7 @@ Wire Wire Line
 	6550 5850 6350 5850
 Connection ~ 6350 5850
 Wire Wire Line
-	6350 3550 6350 3650
-Wire Wire Line
-	6350 3650 6350 3750
-Wire Wire Line
-	6350 3750 6350 3950
-Wire Wire Line
-	6350 3950 6350 4250
+	6350 3550 6350 4250
 Wire Wire Line
 	6350 4250 6550 4250
 Wire Wire Line
@@ -353,7 +307,7 @@ L R R6
 U 1 1 50FAEF5E
 P 1450 1100
 F 0 "R6" V 1530 1100 50  0000 C CNN
-F 1 "10k" V 1450 1100 50  0000 C CNN
+F 1 "1k" V 1450 1100 50  0000 C CNN
 	1    1450 1100
 	0    -1   -1   0   
 $EndComp
@@ -507,7 +461,7 @@ L C C6
 U 1 1 50FABDAE
 P 10000 2250
 F 0 "C6" H 10050 2350 50  0000 L CNN
-F 1 "100nF" H 10050 2150 50  0000 L CNN
+F 1 "4.7uF/16V" H 9850 1950 50  0000 L CNN
 	1    10000 2250
 	1    0    0    -1  
 $EndComp
@@ -606,7 +560,7 @@ L C C5
 U 1 1 50FABD28
 P 9400 2250
 F 0 "C5" H 9450 2350 50  0000 L CNN
-F 1 "4.7uF/16V" H 9450 2150 50  0000 L CNN
+F 1 "100nF" H 9450 2150 50  0000 L CNN
 	1    9400 2250
 	1    0    0    -1  
 $EndComp

@@ -290,12 +290,12 @@ void pollMenuOrDelay() {
 int main(void) {
   wdt_enable(WDTO_4S);
   led(1);
-
-  ADCSRA |= 1<<ADEN; // Enable ADC
   DDRB  |= _BV(PB5);  // LED output
 
+  initADC();
+
   muartInit();
-  mprintf(PSTR("# Power up! Hit enter to enter calibration menu:\n"));
+  mprintf(PSTR("# Hit enter to for:\n"));
   menu = 10;
 
   _delay_ms(100);
