@@ -1,0 +1,9 @@
+
+
+
+
+
+Note: To make the full range of the Voltage input 0-25V with a 5V ADC input replace
+the voltage divider resistors with 330k and 82k.
+
+ 

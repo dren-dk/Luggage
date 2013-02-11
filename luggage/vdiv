@@ -11,7 +11,7 @@ push @R, @R1;
 push @R, map {$_*10} @R1;
 push @R, map {$_*100} @R1;
 
-my $target = 0.2;
+my $target = 10/(10+30);
 my $bestE;
 my $bestR;
 my $bestRatio;
@@ -20,7 +20,7 @@ for my $ru (@R) {
     for my $rl (@R) {
 	my $ratio = $rl/($ru+$rl);
 	my $error = $target-$ratio;
-	print "Ru=$ru, Rl=$rl: $ratio\n";
+	#print "Ru=$ru, Rl=$rl: $ratio\n";
 
 	if (!$bestE or abs($error) <= abs($bestE)) {
 	    $bestE = $error;
@@ -30,4 +30,4 @@ for my $ru (@R) {
     }
 }
 
-print "$bestR: $bestRatio\n";
+print "$bestR (target=$target): $bestRatio\n";

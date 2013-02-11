@@ -43,6 +43,17 @@ void setContrast(unsigned char value) {
   }
 }
 
+void setBacklight(unsigned char value) {
+  if (value) {    
+    OCR2A = value;
+    TCCR2A |= _BV(COM2A1);
+  } else {
+    TCCR2A &=~ _BV(COM2A1);
+  }
+}
+
+
+
 void led(char on) {
   if (on) {
     PORTB |= _BV(PB5);   
@@ -308,10 +319,16 @@ int main(void) {
 
   DDRB  |= _BV(PB1);  // Contrast PWM OC1A
   DDRB  |= _BV(PB3);  // Backlight PWM OC2A
+  //  PORTB |= _BV(PB3);  // Backlight PWM OC2A
 
   // Set up timer 1 for fast PWM mode & the highest frequency available
   TCCR1A = _BV(WGM10);
   TCCR1B = _BV(WGM12) | _BV(CS10);
+
+  // Set up timer 2 for fast PWM mode & the highest frequency available
+  TCCR2A = _BV(WGM20);
+  TCCR2B = _BV(WGM22) | _BV(CS20);
+
 
 
   unsigned int eepromMagic = eeprom_read_word(EEPROM_MAGIC);
@@ -333,8 +350,9 @@ int main(void) {
   setContrast(contrast);
 
   led(0);
+  setBacklight(128); // TODO: This just turns on 100%, no PWM, WTF?
 
-  char frame = 0;
+  unsigned char frame = 0;
   char lcdState = 0;
   while(1) {
     led(frame & 1); 
