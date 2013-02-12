@@ -52,8 +52,6 @@ void setBacklight(unsigned char value) {
   }
 }
 
-
-
 void led(char on) {
   if (on) {
     PORTB |= _BV(PB5);   
@@ -132,9 +130,15 @@ void lcdReadout(char watt) {
 }
 
 int contrast;
+unsigned char backlight;
 
 void pollMenuOrDelay() {
   for (char i=0;i<5;i++) {
+    if (backlight < 255) {
+      backlight++;
+      setBacklight(backlight);
+    }
+
     wdt_reset();
     char ch = mchready() ? mgetch() : 0;
 
@@ -327,9 +331,9 @@ int main(void) {
 
   // Set up timer 2 for fast PWM mode & the highest frequency available
   TCCR2A = _BV(WGM20);
-  TCCR2B = _BV(WGM22) | _BV(CS20);
+  TCCR2B = _BV(CS20);
 
-
+  
 
   unsigned int eepromMagic = eeprom_read_word(EEPROM_MAGIC);
   if (eepromMagic != EEPROM_MAGIC_VALUE) {
@@ -338,7 +342,7 @@ int main(void) {
     eeprom_write_word(EEPROM_ADC2MA, 11988);
     eeprom_write_word(EEPROM_CONTRAST, 30);
     strcpy_P(owner, PSTR(" Not calibrated "));
-    eeprom_write_block(owner, EEPROM_OWNER, OWNER_LENGTH); 
+    eeprom_write_block(owner, EEPROM_OWNER, OWNER_LENGTH);    
   } 
 
   adc2mv   = eeprom_read_word(EEPROM_ADC2MV);
@@ -350,7 +354,8 @@ int main(void) {
   setContrast(contrast);
 
   led(0);
-  setBacklight(128); // TODO: This just turns on 100%, no PWM, WTF?
+  setBacklight(0);
+
 
   unsigned char frame = 0;
   char lcdState = 0;
