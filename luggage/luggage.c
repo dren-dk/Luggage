@@ -97,7 +97,8 @@ void lcdReadout(char watt) {
 
   unsigned long uw = ma;
   uw *= mv;
-  unsigned int mw = uw / 1000;
+  uw /= 1000;
+  unsigned long mw = uw;
   
   int wi =  mw/1000;
   int wd = (mw%1000)/100;
@@ -310,6 +311,14 @@ int main(void) {
   led(1);
   DDRB  |= _BV(PB5);  // LED output
 
+  // Set up timer 2 for fast PWM mode & the highest frequency available
+  TCCR2A = _BV(WGM20);
+  TCCR2B = _BV(CS20);
+  setBacklight(0);
+
+  DDRB  |= _BV(PB1);  // Contrast PWM OC1A
+  DDRB  |= _BV(PB3);  // Backlight PWM OC2A
+
   initADC();
 
   muartInit();
@@ -321,17 +330,11 @@ int main(void) {
   lcdInit();
   _delay_ms(100);
 
-  DDRB  |= _BV(PB1);  // Contrast PWM OC1A
-  DDRB  |= _BV(PB3);  // Backlight PWM OC2A
   //  PORTB |= _BV(PB3);  // Backlight PWM OC2A
 
   // Set up timer 1 for fast PWM mode & the highest frequency available
   TCCR1A = _BV(WGM10);
   TCCR1B = _BV(WGM12) | _BV(CS10);
-
-  // Set up timer 2 for fast PWM mode & the highest frequency available
-  TCCR2A = _BV(WGM20);
-  TCCR2B = _BV(CS20);
 
   
 
@@ -354,7 +357,6 @@ int main(void) {
   setContrast(contrast);
 
   led(0);
-  setBacklight(0);
 
 
   unsigned char frame = 0;
